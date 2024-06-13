@@ -127,12 +127,17 @@ class DataEntryWindow_1(QtWidgets.QWidget):
             shift = self.comboBox_2.currentText()
             start_date = self.dateEdit.date().toString("yyyy-MM-dd")
 
-            new_entry = f"ФИО: {fio}, Должность: {position}, Смена: {shift}, Дата устройства на работу: {start_date}\n"
-
-            # Read existing data
             try:
                 with open(self.file_path, "r") as file:
                     existing_data = file.readlines()
+                    for line in existing_data:
+                        if fio in line:
+                            msg = QtWidgets.QMessageBox()
+                            msg.setWindowTitle("Ошибка")
+                            msg.setText(f"Данное ФИО уже есть в БД")
+                            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+                            msg.exec_()
+                            return
             except Exception as e:
                 msg = QtWidgets.QMessageBox()
                 msg.setWindowTitle("Ошибка")
@@ -140,6 +145,8 @@ class DataEntryWindow_1(QtWidgets.QWidget):
                 msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
                 msg.exec_()
                 return
+
+            new_entry = f"ФИО: {fio}, Должность: {position}, Смена: {shift}, Дата устройства на работу: {start_date}\n"
 
             # Add new data to existing data
             existing_data.append(new_entry)
@@ -169,6 +176,21 @@ class DataEntryWindow_1(QtWidgets.QWidget):
             self.make_file_readonly(self.file_path)
             if fio:
                 self.close()
+    def number_of_lines(self):
+        return len(open("employee_data.txt", "r").readlines())
+    def list_Data(self):
+        x = []
+        transformed_data = []
+        for data_item in open("employee_data.txt", "r").readlines():
+            x.append(data_item.strip().split(", "))
+        for record in x:
+            new_record = []
+            for field in record:
+                parts = field.split(": ")
+                if len(parts) > 1:
+                    new_record.append(parts[1].strip())
+            transformed_data.append(new_record)
+        return transformed_data
 
 if __name__ == "__main__":
     import sys
