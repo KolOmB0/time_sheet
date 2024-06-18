@@ -9,48 +9,55 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
-
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(400, 300)
-        self.lineEdit = QtWidgets.QLineEdit(Form)
-        self.lineEdit.setGeometry(QtCore.QRect(70, 80, 261, 31))
-        self.lineEdit.setObjectName("lineEdit")
-        self.label = QtWidgets.QLabel(Form)
+from window_person import DataEntryWindow_1 as fail_1
+class Dismissal_transfer(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setObjectName("Form")
+        self.resize(400, 300)
+        self.comboBox = QtWidgets.QComboBox(self)
+        self.comboBox.setGeometry((QtCore.QRect(70, 80, 261, 31)))
+        self.comboBox.setObjectName("comboBox")
+        self.label = QtWidgets.QLabel(self)
         self.label.setGeometry(QtCore.QRect(100, 40, 171, 41))
         self.label.setScaledContents(False)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setWordWrap(False)
         self.label.setOpenExternalLinks(False)
         self.label.setObjectName("label")
-        self.dateEdit = QtWidgets.QDateEdit(Form)
+        self.dateEdit = QtWidgets.QDateEdit(self)
         self.dateEdit.setGeometry(QtCore.QRect(130, 180, 110, 22))
         self.dateEdit.setObjectName("dateEdit")
-        self.radioButton = QtWidgets.QRadioButton(Form)
+        self.radioButton = QtWidgets.QRadioButton(self)
         self.radioButton.setGeometry(QtCore.QRect(10, 170, 101, 21))
         self.radioButton.setObjectName("radioButton")
-        self.radioButton_2 = QtWidgets.QRadioButton(Form)
+        self.radioButton_2 = QtWidgets.QRadioButton(self)
         self.radioButton_2.setGeometry(QtCore.QRect(10, 200, 101, 21))
         self.radioButton_2.setObjectName("radioButton_2")
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-
-    def retranslateUi(self, Form):
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self)
+        self.setComboBoxItems(self.fio_bring_out())
+    def fio_bring_out(self):
+        fio = fail_1.list_Data(self)
+        fio_out = []
+        for record in fio:
+            fio_out.append(record[0])
+        return fio_out
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        self.setWindowTitle(_translate("Form", "Form"))
         self.label.setText(_translate("Form", "Фамилия Имя Отчество"))
         self.radioButton.setText(_translate("Form", "Увальнение"))
         self.radioButton_2.setText(_translate("Form", "Перевод"))
+    def setComboBoxItems(self, items):
+        self.comboBox.addItems(items)
+
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
+    ui = Dismissal_transfer()
+    ui.show()
     sys.exit(app.exec_())

@@ -75,7 +75,6 @@ class DataEntryWindow_1(QtWidgets.QWidget):
         self.pushButton.clicked.connect(self.save_data)
 
         self.retranslateUi()
-        QtCore.QMetaObject.connectSlotsByName(self)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -86,9 +85,10 @@ class DataEntryWindow_1(QtWidgets.QWidget):
         self.label_4.setText(_translate("self", "Дата устройства на работу   ( Первый рабочий день)"))
         self.pushButton.setText(_translate("self", "Сохранить"))
 
+    # permission read + write
     def make_file_writable(self, file_path):
         os.chmod(file_path, 0o666)
-
+    # permission read
     def make_file_readonly(self, file_path):
         os.chmod(file_path, 0o444)
 
