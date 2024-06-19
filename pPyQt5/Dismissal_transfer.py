@@ -18,6 +18,11 @@ class Dismissal_transfer(QtWidgets.QWidget):
         self.comboBox = QtWidgets.QComboBox(self)
         self.comboBox.setGeometry((QtCore.QRect(70, 80, 261, 31)))
         self.comboBox.setObjectName("comboBox")
+
+        self.pushButton = QtWidgets.QPushButton(self)
+        self.pushButton.setGeometry(QtCore.QRect(100, 225, 170, 40))
+        self.pushButton.setText('Сохронить')
+
         self.label = QtWidgets.QLabel(self)
         self.label.setGeometry(QtCore.QRect(100, 40, 171, 41))
         self.label.setScaledContents(False)
@@ -28,6 +33,10 @@ class Dismissal_transfer(QtWidgets.QWidget):
         self.dateEdit = QtWidgets.QDateEdit(self)
         self.dateEdit.setGeometry(QtCore.QRect(130, 180, 110, 22))
         self.dateEdit.setObjectName("dateEdit")
+        self.dateEdit.setCalendarPopup(True)
+        self.dateEdit.setDisplayFormat("dd.MM.yyyy")
+        self.dateEdit.setDate(QtCore.QDate.currentDate())
+
         self.radioButton = QtWidgets.QRadioButton(self)
         self.radioButton.setGeometry(QtCore.QRect(10, 170, 101, 21))
         self.radioButton.setObjectName("radioButton")
@@ -38,6 +47,7 @@ class Dismissal_transfer(QtWidgets.QWidget):
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
         self.setComboBoxItems(self.fio_bring_out())
+        self.pushButton.clicked.connect(self.save_changes)
     def fio_bring_out(self):
         fio = fail_1.list_Data(self)
         fio_out = []
@@ -52,6 +62,40 @@ class Dismissal_transfer(QtWidgets.QWidget):
         self.radioButton_2.setText(_translate("Form", "Перевод"))
     def setComboBoxItems(self, items):
         self.comboBox.addItems(items)
+
+    def save_changes(self):
+        selected_employee = self.comboBox.currentText()
+        selected_date = self.dateEdit.date().toString("dd.MM.yyyy")
+        if self.radioButton.isChecked():
+            self.dismiss_employee(selected_employee, selected_date)
+        elif self.radioButton_2.isChecked():
+            self.transfer_employee(selected_employee, selected_date)
+
+    def dismiss_employee(self, employee, date):
+        employees = fail_1.list_Data(self)
+        updated_employees = [e for e in employees if e[0] != employee]
+        self.write_employee_data(updated_employees)
+        self.write_dismissal_record(employee, date)
+        QtWidgets.QMessageBox.information(self, "Успех", f"{employee} уволен.")
+
+    def transfer_employee(self, employee, date):
+        new_position, ok = QtWidgets.QInputDialog.getText(self, "Перевод", "Введите новую должность:")
+        if ok:
+            employees = fail_1.list_Data(self)
+            for e in employees:
+                if e[0] == employee:
+                    e[1] = new_position
+            self.write_employee_data(employees)
+            QtWidgets.QMessageBox.information(self, "Успех", f"{employee} переведен на должность {new_position}.")
+
+    def write_employee_data(self, data):
+        with open("employee_data.txt", "w") as file:
+            for record in data:
+                file.write(", ".join(record) + "\n")
+
+    def write_dismissal_record(self, employee, date):
+        with open("dismissal_transfer.txt", "a") as file:
+            file.write(f"{employee}, уволен: {date}\n")
 
 
 
