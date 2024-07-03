@@ -2,14 +2,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QTableWidgetItem
 import os
 from window_person import DataEntryWindow_1
-from window_del_person import DataEntryWindow_2
+from Dismissal_transfer import Dismissal_transfer
 
 
 class DataEntryWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.window_person = DataEntryWindow_1()
-        self.window_del_person = DataEntryWindow_2()
+        self.window_person_1 = Dismissal_transfer()
         self.setObjectName("Form")
         self.resize(770, 725)
         self.pushButton = QtWidgets.QPushButton(self)
@@ -37,6 +37,7 @@ class DataEntryWindow(QtWidgets.QWidget):
         self.pushButton.clicked.connect(self.open_window_person)
         self.iterate_over_cells()
         self.enable_sorting()
+        self.pushButton_3.clicked.connect(self.open_wimdow_Dismissal_transfer)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -48,6 +49,8 @@ class DataEntryWindow(QtWidgets.QWidget):
     def open_window_person(self):
         self.window_person.show()
         self.window_person.closeEvent = self.update_table
+    def open_wimdow_Dismissal_transfer(self):
+        self.window_person_1.show()
 
     def update_table(self, event):
         self.tableWidget.setRowCount(self.window_person.number_of_lines())

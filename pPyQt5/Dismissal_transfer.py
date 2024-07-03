@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\untitled.ui'
+# Form implementation generated from reading ui file '
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -18,10 +18,14 @@ class Dismissal_transfer(QtWidgets.QWidget):
         self.comboBox = QtWidgets.QComboBox(self)
         self.comboBox.setGeometry((QtCore.QRect(70, 80, 261, 31)))
         self.comboBox.setObjectName("comboBox")
+        self.comboBox_1 = QtWidgets.QComboBox(self)
+        self.comboBox_1.setGeometry(QtCore.QRect(70, 200, 261, 31))
+        self.comboBox_1.setObjectName("comboBox")
+        self.comboBox_1.addItems(["Уволен", "Cмена A", "Cмена B", "Cмена C", "Cмена D","Пятидневка"])
 
         self.pushButton = QtWidgets.QPushButton(self)
-        self.pushButton.setGeometry(QtCore.QRect(100, 225, 170, 40))
-        self.pushButton.setText('Сохронить')
+        self.pushButton.setGeometry(QtCore.QRect(150, 240, 101, 31))
+        self.pushButton.setObjectName("pushButton")
 
         self.label = QtWidgets.QLabel(self)
         self.label.setGeometry(QtCore.QRect(100, 40, 171, 41))
@@ -30,19 +34,27 @@ class Dismissal_transfer(QtWidgets.QWidget):
         self.label.setWordWrap(False)
         self.label.setOpenExternalLinks(False)
         self.label.setObjectName("label")
+
+        self.label_2 = QtWidgets.QLabel(self)
+        self.label_2.setGeometry(QtCore.QRect(90, 150, 41, 31))
+        self.label_2.setToolTip("")
+        self.label_2.setToolTipDuration(-1)
+        self.label_2.setLineWidth(0)
+        self.label_2.setMidLineWidth(0)
+        self.label_2.setTextFormat(QtCore.Qt.AutoText)
+        self.label_2.setScaledContents(False)
+        self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_2.setWordWrap(True)
+        self.label_2.setIndent(1)
+        self.label_2.setOpenExternalLinks(False)
+        self.label_2.setObjectName("label_2")
+
         self.dateEdit = QtWidgets.QDateEdit(self)
-        self.dateEdit.setGeometry(QtCore.QRect(130, 180, 110, 22))
+        self.dateEdit.setGeometry(QtCore.QRect(150, 150, 121, 31))
         self.dateEdit.setObjectName("dateEdit")
         self.dateEdit.setCalendarPopup(True)
         self.dateEdit.setDisplayFormat("dd.MM.yyyy")
         self.dateEdit.setDate(QtCore.QDate.currentDate())
-
-        self.radioButton = QtWidgets.QRadioButton(self)
-        self.radioButton.setGeometry(QtCore.QRect(10, 170, 101, 21))
-        self.radioButton.setObjectName("radioButton")
-        self.radioButton_2 = QtWidgets.QRadioButton(self)
-        self.radioButton_2.setGeometry(QtCore.QRect(10, 200, 101, 21))
-        self.radioButton_2.setObjectName("radioButton_2")
 
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
@@ -58,8 +70,8 @@ class Dismissal_transfer(QtWidgets.QWidget):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("Form", "Form"))
         self.label.setText(_translate("Form", "Фамилия Имя Отчество"))
-        self.radioButton.setText(_translate("Form", "Увальнение"))
-        self.radioButton_2.setText(_translate("Form", "Перевод"))
+        self.label_2.setText(_translate("Form", "Дата"))
+        self.pushButton.setText(_translate("Form", "Сохранить"))
     def setComboBoxItems(self, items):
         self.comboBox.addItems(items)
 
@@ -88,14 +100,6 @@ class Dismissal_transfer(QtWidgets.QWidget):
             self.write_employee_data(employees)
             QtWidgets.QMessageBox.information(self, "Успех", f"{employee} переведен на должность {new_position}.")
 
-    def write_employee_data(self, data):
-        with open("employee_data.txt", "w") as file:
-            for record in data:
-                file.write(", ".join(record) + "\n")
-
-    def write_dismissal_record(self, employee, date):
-        with open("dismissal_transfer.txt", "a") as file:
-            file.write(f"{employee}, уволен: {date}\n")
 
 
 
